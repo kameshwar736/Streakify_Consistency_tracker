@@ -6,7 +6,7 @@ const Setup = () => {
 
     const nav = useNavigate()
 
-    const [detail, setDaetail] = useState({ userName: "", userAge: "", designation: "", goal: "" });
+    const [detail, setDaetail] = useState({ userName: "", userAge: "", designation: "", goal: "", streak: 0 });
     const [currentStep, setCurrentStep] = useState(1);
 
     const block1 = useRef()
@@ -43,20 +43,23 @@ const Setup = () => {
     }
 
     return (
-        <div style={styles.page}>
+        <div className="min-h-screen flex items-center justify-center bg-gray-900 px-6 py-12 gap-12 flex-wrap">
+
             {/* Left Side — Branding */}
             <motion.div
-                style={styles.branding}
+                className="flex-1 max-w-md text-white p-8"
                 initial={{ opacity: 0, x: -50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
             >
-                <div style={styles.logo}>
-                    <span style={styles.logoIcon}>⚡</span>
-                    <h1 style={styles.logoText}>Streakify</h1>
+                {/* Logo */}
+                <div className="flex items-center gap-3 mb-10">
+                    <span className="text-5xl leading-none">⚡</span>
+                    <h1 className="text-5xl font-bold tracking-tight text-white">Streakify</h1>
                 </div>
 
-                <div style={styles.quotes}>
+                {/* Quotes */}
+                <div className="flex flex-col gap-5">
                     {[
                         '"Success is the sum of small efforts repeated day in and day out."',
                         '"Don\'t break the chain. Every day counts."',
@@ -64,7 +67,7 @@ const Setup = () => {
                     ].map((quote, i) => (
                         <motion.p
                             key={i}
-                            style={styles.quote}
+                            className="text-base italic text-gray-300 border-l-4 border-gray-500 pl-4 leading-relaxed"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2 + i * 0.2 }}
@@ -77,39 +80,27 @@ const Setup = () => {
 
             {/* Right Side — Form Card */}
             <motion.div
-                style={styles.card}
+                className="flex-1 max-w-md bg-white rounded-3xl shadow-2xl p-10"
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
             >
-                {/* Header */}
-                <div style={styles.cardHeader}>
-                    <h2 style={styles.cardTitle}>Welcome Buddy!!</h2>
-                    <p style={styles.cardSubtitle}>Let's start your consistency journey together</p>
+                {/* Card Header */}
+                <div className="text-center mb-7">
+                    <h2 className="text-3xl font-bold text-gray-900 tracking-tight mb-1">Welcome Buddy!!</h2>
+                    <p className="text-gray-400 text-sm">Let's start your consistency journey together</p>
                 </div>
 
                 {/* Step Indicator */}
-                <div style={styles.stepper}>
-                    <div style={{
-                        ...styles.stepDot,
-                        background: 'linear-gradient(135deg, #059669, #0d9488)',
-                        color: '#fff',
-                    }}>
+                <div className="flex items-center justify-center gap-2 mb-8">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300
+                        ${currentStep >= 1 ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-400"}`}>
                         {currentStep > 1 ? '✓' : '1'}
                     </div>
-                    <div style={{
-                        ...styles.stepLine,
-                        background: currentStep === 2
-                            ? 'linear-gradient(90deg, #059669, #0d9488)'
-                            : '#d1d5db',
-                    }} />
-                    <div style={{
-                        ...styles.stepDot,
-                        background: currentStep === 2
-                            ? 'linear-gradient(135deg, #059669, #0d9488)'
-                            : '#e5e7eb',
-                        color: currentStep === 2 ? '#fff' : '#6b7280',
-                    }}>
+                    <div className={`h-1 w-14 rounded-full transition-all duration-300
+                        ${currentStep === 2 ? "bg-gray-900" : "bg-gray-200"}`} />
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm transition-all duration-300
+                        ${currentStep === 2 ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-400"}`}>
                         2
                     </div>
                 </div>
@@ -123,47 +114,35 @@ const Setup = () => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -30 }}
                             transition={{ duration: 0.3 }}
-                            style={styles.form}
+                            className="flex flex-col gap-5"
                         >
-                            <div style={styles.field}>
-                                <label style={styles.label}>
-                                  
-                                    Your Good Name
-                                </label>
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold text-gray-700">Your Good Name</label>
                                 <input
                                     type="text"
                                     placeholder="Enter your good name"
                                     onChange={handleChange}
                                     name="userName"
                                     value={detail.userName}
-                                    style={styles.input}
-                                    onFocus={e => e.target.style.borderColor = '#059669'}
-                                    onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                                    className="w-full bg-gray-100 border-2 border-transparent focus:border-gray-900 focus:bg-white rounded-xl px-4 py-3 text-sm text-gray-800 outline-none transition-all placeholder-gray-400"
                                 />
                             </div>
 
-                            <div style={styles.field}>
-                                <label style={styles.label}>
-                                 
-                                    Your Current Age
-                                </label>
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold text-gray-700">Your Current Age</label>
                                 <input
                                     type="number"
                                     placeholder="Your current age"
                                     onChange={handleChange}
                                     name="userAge"
                                     value={detail.userAge}
-                                    style={styles.input}
-                                    onFocus={e => e.target.style.borderColor = '#0d9488'}
-                                    onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                                    className="w-full bg-gray-100 border-2 border-transparent focus:border-gray-900 focus:bg-white rounded-xl px-4 py-3 text-sm text-gray-800 outline-none transition-all placeholder-gray-400"
                                 />
                             </div>
 
                             <button
                                 onClick={gotoForm2}
-                                style={styles.primaryBtn}
-                                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.03)'}
-                                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                                className="w-full bg-gray-900 hover:bg-gray-700 active:scale-95 text-white font-semibold py-3 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-gray-900/20"
                             >
                                 Next →
                             </button>
@@ -173,57 +152,43 @@ const Setup = () => {
 
                 {/* Step 2 */}
                 <div ref={block2}>
-                    <form onSubmit={handlesubmit} style={styles.form}>
-                        <div style={styles.field}>
-                            <label style={styles.label}>
-                              
-                                Your Current Designation
-                            </label>
+                    <form onSubmit={handlesubmit} className="flex flex-col gap-5">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-gray-700">Your Current Designation</label>
                             <input
                                 type="text"
                                 placeholder="Your current designation"
                                 onChange={handleChange}
                                 name="designation"
                                 value={detail.designation}
-                                style={styles.input}
-                                onFocus={e => e.target.style.borderColor = '#059669'}
-                                onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                                className="w-full bg-gray-100 border-2 border-transparent focus:border-gray-900 focus:bg-white rounded-xl px-4 py-3 text-sm text-gray-800 outline-none transition-all placeholder-gray-400"
                             />
                         </div>
 
-                        <div style={styles.field}>
-                            <label style={styles.label}>
-                    
-                                Your Goal
-                            </label>
+                        <div className="flex flex-col gap-2">
+                            <label className="text-sm font-semibold text-gray-700">Your Goal</label>
                             <input
                                 type="text"
                                 placeholder="Your goal"
                                 onChange={handleChange}
                                 name="goal"
                                 value={detail.goal}
-                                style={styles.input}
-                                onFocus={e => e.target.style.borderColor = '#0891b2'}
-                                onBlur={e => e.target.style.borderColor = '#e5e7eb'}
+                                className="w-full bg-gray-100 border-2 border-transparent focus:border-gray-900 focus:bg-white rounded-xl px-4 py-3 text-sm text-gray-800 outline-none transition-all placeholder-gray-400"
                             />
                         </div>
 
-                        <div style={styles.btnRow}>
+                        <div className="flex gap-3">
                             <button
                                 onClick={gotofrom1}
-                                style={styles.secondaryBtn}
-                                onMouseEnter={e => e.currentTarget.style.background = '#d1d5db'}
-                                onMouseLeave={e => e.currentTarget.style.background = '#e5e7eb'}
+                                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 rounded-xl text-sm transition-colors"
                             >
                                 ← Back
                             </button>
                             <button
                                 type="submit"
-                                style={styles.primaryBtn}
-                                onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.03)'}
-                                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                                className="flex-1 bg-gray-900 hover:bg-gray-700 active:scale-95 text-white font-semibold py-3 rounded-xl text-sm transition-all duration-200 shadow-lg shadow-gray-900/20"
                             >
-                                Submit 
+                                Submit
                             </button>
                         </div>
                     </form>
@@ -234,173 +199,3 @@ const Setup = () => {
 }
 
 export default Setup
-
-const styles = {
-    page: {
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #10b981 0%, #0d9488 50%, #0891b2 100%)',
-        padding: '2rem',
-        gap: '3rem',
-        flexWrap: 'wrap',
-        fontFamily: "'Segoe UI', system-ui, sans-serif",
-    },
-    branding: {
-        flex: '1 1 300px',
-        maxWidth: '460px',
-        color: '#fff',
-        padding: '2rem',
-    },
-    logo: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.75rem',
-        marginBottom: '2rem',
-    },
-    logoIcon: {
-        fontSize: '2.8rem',
-        lineHeight: 1,
-    },
-    logoText: {
-        fontSize: '3.5rem',
-        fontWeight: '700',
-        color: '#fff',
-        margin: 0,
-        letterSpacing: '-1px',
-    },
-    quotes: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1.25rem',
-    },
-    quote: {
-        fontSize: '1.05rem',
-        fontStyle: 'italic',
-        opacity: 0.92,
-        borderLeft: '4px solid rgba(255,255,255,0.7)',
-        paddingLeft: '1rem',
-        margin: 0,
-        lineHeight: 1.6,
-    },
-    card: {
-        flex: '1 1 360px',
-        maxWidth: '480px',
-        background: '#fff',
-        borderRadius: '1.5rem',
-        boxShadow: '0 25px 60px rgba(0,0,0,0.18)',
-        padding: '2.5rem',
-    },
-    cardHeader: {
-        textAlign: 'center',
-        marginBottom: '1.75rem',
-    },
-    cardTitle: {
-        fontSize: '1.8rem',
-        fontWeight: '700',
-        background: 'linear-gradient(135deg, #059669, #0d9488, #0891b2)',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        margin: '0 0 0.4rem',
-    },
-    cardSubtitle: {
-        color: '#6b7280',
-        margin: 0,
-        fontSize: '0.95rem',
-    },
-    stepper: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0.5rem',
-        marginBottom: '2rem',
-    },
-    stepDot: {
-        width: '2.4rem',
-        height: '2.4rem',
-        borderRadius: '50%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontWeight: '600',
-        fontSize: '0.95rem',
-        transition: 'all 0.3s ease',
-    },
-    stepLine: {
-        height: '4px',
-        width: '4rem',
-        borderRadius: '2px',
-        transition: 'background 0.3s ease',
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1.25rem',
-    },
-    field: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.5rem',
-    },
-    label: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        color: '#374151',
-        fontWeight: '500',
-        fontSize: '0.95rem',
-    },
-    icon: {
-        fontSize: '1.1rem',
-    },
-    input: {
-        width: '100%',
-        padding: '0.8rem 1rem',
-        border: '2px solid #e5e7eb',
-        borderRadius: '0.75rem',
-        fontSize: '1rem',
-        outline: 'none',
-        transition: 'border-color 0.2s ease',
-        boxSizing: 'border-box',
-        background: '#fff',
-        color: '#111827',
-    },
-    primaryBtn: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0.5rem',
-        width: '100%',
-        padding: '0.85rem',
-        background: 'linear-gradient(135deg, #059669, #0d9488)',
-        color: '#fff',
-        border: 'none',
-        borderRadius: '0.75rem',
-        fontSize: '1rem',
-        fontWeight: '600',
-        cursor: 'pointer',
-        transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-        boxShadow: '0 4px 14px rgba(5,150,105,0.35)',
-    },
-    secondaryBtn: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '0.5rem',
-        flex: 1,
-        padding: '0.85rem',
-        background: '#e5e7eb',
-        color: '#374151',
-        border: 'none',
-        borderRadius: '0.75rem',
-        fontSize: '1rem',
-        fontWeight: '600',
-        cursor: 'pointer',
-        transition: 'background 0.2s ease',
-    },
-    btnRow: {
-        display: 'flex',
-        gap: '1rem',
-    },
-}

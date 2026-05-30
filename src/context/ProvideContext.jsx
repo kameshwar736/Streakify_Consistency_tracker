@@ -3,12 +3,12 @@ import CreateContext from './CreateContext'
 
 const ProvideContext = ({ children }) => {
 
-    const profileDetail = JSON.parse(localStorage.getItem("localUser")) || false;
+    const taskDetail = JSON.parse(localStorage.getItem("task")) || false;
 
 
     return (
         <>
-            <CreateContext.Provider value={profileDetail} >
+            <CreateContext.Provider value={taskDetail} >
                 {children}
             </CreateContext.Provider>
         </>
