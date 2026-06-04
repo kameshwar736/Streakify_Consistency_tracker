@@ -45,73 +45,86 @@ const Task = () => {
         <>
             <Navbar />
 
-            <div className="min-h-screen bg-gray-50">
-                <div className="max-w-2xl mx-auto px-6 py-10">
+            <div className="min-h-screen bg-gray-50 px-4 md:px-10 py-8">
+
+                {/* FULL WIDTH */}
+                <div className="w-full max-w-7xl mx-auto">
 
                     {/* Header */}
-                    <div className="flex items-start justify-between mb-7">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">My Daily Tasks</h1>
-                            <p className="text-gray-400 text-sm mt-1">Organize and track your daily schedule</p>
+                            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
+                                My Daily Tasks
+                            </h1>
+                            <p className="text-gray-500 text-sm mt-1">
+                                Organize and track your daily schedule
+                            </p>
                         </div>
+
                         <button
                             onClick={() => setShowForm(true)}
-                            className="flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold px-5 py-3 rounded-xl transition-colors"
+                            className="flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white text-sm font-semibold px-6 py-3 rounded-xl transition-colors w-full md:w-auto justify-center"
                         >
-                            <span className="text-lg leading-none">+</span> Add Task
+                            <span className="text-lg">+</span> Add Task
                         </button>
                     </div>
 
                     {/* Empty State */}
                     {tasks.length === 0 && (
-                        <div className="bg-white border border-gray-200 rounded-2xl py-16 flex flex-col items-center justify-center">
-                            <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-                                <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+                        <div className="bg-white border border-gray-200 rounded-2xl py-20 flex flex-col items-center justify-center">
+                            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
                                 </svg>
                             </div>
-                            <p className="font-semibold text-gray-700 text-base">No tasks yet</p>
-                            <p className="text-gray-400 text-sm mt-1">Click "Add Task" to create your first task</p>
+                            <p className="font-semibold text-gray-700 text-lg">No tasks yet</p>
+                            <p className="text-gray-400 text-sm mt-1">
+                                Click "Add Task" to create your first task
+                            </p>
                         </div>
                     )}
 
-                    {/* Task List */}
-                    <div className="flex flex-col gap-3">
+                    {/* TASK GRID (not narrow anymore) */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mt-6">
                         {tasks.map((e, i) => (
                             <div
                                 key={i}
-                                className="bg-white border border-gray-200 rounded-2xl px-5 py-4 flex items-center justify-between gap-4 hover:shadow-md transition-shadow"
+                                className="bg-white border border-gray-200 rounded-2xl p-5 flex flex-col justify-between hover:shadow-md transition"
                             >
-                                <div className="flex items-center gap-4 flex-1 min-w-0">
-                                    <div className="flex-1 min-w-0">
-                                        <p className="font-medium text-gray-800 text-sm truncate">{e.do}</p>
-                                        <div className="flex gap-2 mt-2">
-                                            {e.start && (
-                                                <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2.5 py-1 rounded-lg">
-                                                    ▶ {fmt(e.start)}
-                                                </span>
-                                            )}
-                                            {e.end && (
-                                                <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2.5 py-1 rounded-lg">
-                                                    ■ {fmt(e.end)}
-                                                </span>
-                                            )}
-                                        </div>
+                                <div>
+                                    <p className="font-medium text-gray-800 text-sm mb-3 break-words">
+                                        {e.do}
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-2">
+                                        {e.start && (
+                                            <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2.5 py-1 rounded-lg">
+                                                ▶ {fmt(e.start)}
+                                            </span>
+                                        )}
+                                        {e.end && (
+                                            <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2.5 py-1 rounded-lg">
+                                                ■ {fmt(e.end)}
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
+
                                 <button
                                     onClick={() => handleDetele(e)}
-                                    className="text-gray-400 border border-gray-200 hover:border-red-400 hover:text-red-500 hover:bg-red-50 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors shrink-0"
+                                    className="mt-4 text-gray-400 border border-gray-200 hover:border-red-400 hover:text-red-500 hover:bg-red-50 text-xs font-medium px-3 py-2 rounded-lg transition"
                                 >
                                     Delete
                                 </button>
                             </div>
                         ))}
                     </div>
+
                 </div>
             </div>
 
-            {/* Modal Overlay */}
+            {/* Modal */}
             {showForm && (
                 <div
                     className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
@@ -119,70 +132,54 @@ const Task = () => {
                 >
                     <div className="bg-white rounded-2xl p-8 w-full max-w-md mx-4 shadow-2xl">
 
-                        {/* Modal Header */}
-                        <div className="flex items-start justify-between mb-6">
-                            <div>
-                                <h2 className="text-xl font-bold text-gray-900 tracking-tight">Add New Task</h2>
-                                <p className="text-gray-400 text-sm mt-1">Schedule a new task for your day</p>
-                            </div>
-                            <button
-                                onClick={() => setShowForm(false)}
-                                className="text-gray-400 hover:text-gray-600 text-2xl leading-none p-1"
-                            >
-                                ×
-                            </button>
+                        <div className="flex justify-between mb-6">
+                            <h2 className="text-xl font-bold text-gray-900">Add New Task</h2>
+                            <button onClick={() => setShowForm(false)} className="text-gray-400 text-2xl">×</button>
                         </div>
 
                         <form onSubmit={handleSubmit}>
-                            {/* Start Time */}
                             <div className="mb-4">
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Start Time</label>
+                                <label className="text-sm font-semibold text-gray-700">Start Time</label>
                                 <input
                                     type="time"
                                     onChange={handleChange}
                                     name='start'
                                     value={todo.start}
-                                    className="w-full bg-gray-100 border-none rounded-xl px-4 py-3 text-sm text-gray-700 outline-none focus:bg-gray-200 transition-colors"
+                                    className="w-full bg-gray-100 rounded-xl px-4 py-3 mt-1"
                                 />
                             </div>
 
-                            {/* End Time */}
                             <div className="mb-4">
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">End Time</label>
+                                <label className="text-sm font-semibold text-gray-700">End Time</label>
                                 <input
                                     type="time"
                                     onChange={handleChange}
                                     name='end'
                                     value={todo.end}
-                                    className="w-full bg-gray-100 border-none rounded-xl px-4 py-3 text-sm text-gray-700 outline-none focus:bg-gray-200 transition-colors"
+                                    className="w-full bg-gray-100 rounded-xl px-4 py-3 mt-1"
                                 />
                             </div>
 
-                            {/* Task Description */}
                             <div className="mb-6">
-                                <label className="block text-sm font-semibold text-gray-700 mb-2">Task Description</label>
+                                <label className="text-sm font-semibold text-gray-700">Task</label>
                                 <input
                                     type="text"
-                                    placeholder='Enter your task...'
                                     name='do'
                                     value={todo.do}
                                     onChange={handleChange}
-                                    className="w-full bg-gray-100 border-none rounded-xl px-4 py-3 text-sm text-gray-700 outline-none focus:bg-gray-200 transition-colors placeholder-gray-400"
+                                    placeholder="Enter task..."
+                                    className="w-full bg-gray-100 rounded-xl px-4 py-3 mt-1"
                                 />
                             </div>
 
-                            {/* Buttons */}
                             <div className="flex gap-3">
-                                <button
-                                    type="submit"
-                                    className="flex-1 bg-gray-900 hover:bg-gray-700 text-white font-semibold py-3 rounded-xl text-sm transition-colors"
-                                >
+                                <button className="flex-1 bg-gray-900 text-white py-3 rounded-xl">
                                     Add Task
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setShowForm(false)}
-                                    className="border border-gray-200 hover:bg-gray-50 text-gray-700 font-medium py-3 px-6 rounded-xl text-sm transition-colors"
+                                    className="border px-6 py-3 rounded-xl"
                                 >
                                     Cancel
                                 </button>
@@ -192,8 +189,8 @@ const Task = () => {
                 </div>
             )}
 
-            {/* Help Button */}
-            <button className="fixed bottom-6 right-6 w-10 h-10 bg-gray-900 hover:bg-gray-700 text-white rounded-full text-sm font-semibold shadow-lg transition-colors">
+            {/* Floating Help */}
+            <button className="fixed bottom-6 right-6 w-12 h-12 bg-gray-900 text-white rounded-full shadow-lg">
                 ?
             </button>
         </>
