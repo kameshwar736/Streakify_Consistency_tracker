@@ -6,7 +6,9 @@ const Setup = () => {
 
     const nav = useNavigate()
 
-    const [detail, setDaetail] = useState({ userName: "", userAge: "", designation: "", goal: "", streak: 0 });
+    const [detail, setDetail] = useState({ userName: "", userAge: "", designation: "", goal: "", streak: 0 });
+    const [errMsg,setErrMsg] = useState("");
+    
     const [currentStep, setCurrentStep] = useState(1);
 
     const block1 = useRef()
@@ -19,14 +21,20 @@ const Setup = () => {
     }, [])
 
     const handleChange = (e) => {
-        setDaetail({ ...detail, [e.target.name]: e.target.value })
+        setDetail({ ...detail, [e.target.name]: e.target.value })
     }
 
     const gotoForm2 = (e) => {
         e.preventDefault()
-        block1.current.style.display = "none"
-        block2.current.style.display = "block"
-        setCurrentStep(2)
+
+        if (detail.userName && detail.userAge) {
+            block1.current.style.display = "none"
+            block2.current.style.display = "block"
+            setCurrentStep(2)
+        }else{
+            setErrMsg("Please fill the valid feild")
+        }
+
     }
 
     const gotofrom1 = (e) => {
@@ -38,8 +46,13 @@ const Setup = () => {
 
     const handlesubmit = (e) => {
         e.preventDefault()
-        localStorage.setItem("localUser", JSON.stringify(detail));
-        nav('/')
+        if (detail.designation && detail.goal) {
+            localStorage.setItem("localUser", JSON.stringify(detail));
+            nav('/')
+        } else {
+            setErrMsg("Please fill the valid feild")
+        }
+
     }
 
     return (
@@ -117,10 +130,13 @@ const Setup = () => {
                             className="flex flex-col gap-5"
                         >
                             <div className="flex flex-col gap-2">
-                                <label className="text-sm font-semibold text-gray-700">Your Good Name</label>
+                               <div className='justify-center ali'>
+                                 <p  className='text-red-500 text-center'>{errMsg}</p>
+                               </div>
+                                <label className="text-sm font-semibold text-gray-700">Your Name</label>
                                 <input
                                     type="text"
-                                    placeholder="Enter your good name"
+                                    placeholder="Enter your  name"
                                     onChange={handleChange}
                                     name="userName"
                                     value={detail.userName}

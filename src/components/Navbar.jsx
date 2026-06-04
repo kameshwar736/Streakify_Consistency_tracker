@@ -36,6 +36,12 @@ const Navbar = () => {
         >
           Dashboard
         </Link>
+         <Link
+          to='/Shedule'
+          className="text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 px-4 py-2 rounded-xl transition-colors"
+        >
+          Scheduler
+        </Link>
         <Link
           to='/profile'
           className="text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-100 px-4 py-2 rounded-xl transition-colors"
