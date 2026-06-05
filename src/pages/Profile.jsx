@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CreateContext_New from "../context/CreateContext_New";
+import { useNavigate } from "react-router-dom";
 
 const ProfileDashboard = () => {
 
+  const navToSetup = useNavigate()
   const { theme } = useContext(CreateContext_New)
 
   const [user, setUser] = useState({});
@@ -92,6 +94,12 @@ const ProfileDashboard = () => {
     }
   };
 
+  //delete account
+  const [verify, setVerify] = useState(false)
+  const handleDelete = () => {
+    setVerify(!verify)
+
+  }
   return (
     <>
       <Navbar />
@@ -119,7 +127,7 @@ const ProfileDashboard = () => {
           {/* STATS */}
           <div className="grid grid-cols-3 gap-4 mb-6">
 
-            {[ 
+            {[
               { label: "Completed", value: completedToday },
               { label: "Total Tasks", value: totalToday },
               { label: "Best Streak", value: bestStreak }
@@ -147,7 +155,7 @@ const ProfileDashboard = () => {
             </div>
           </div>
 
-        
+
           {/* HEATMAP */}
           <div className={`${theme ? "bg-white border-gray-200" : "bg-gray-900 border-gray-700"} p-5 rounded-2xl mb-6 border`}>
             <p className="font-semibold mb-4">Activity</p>
@@ -180,6 +188,59 @@ const ProfileDashboard = () => {
                 Try to complete more tasks today.
               </p>
             )}
+          </div>
+          <div className="p-10  flex text-red-600 justify-center items-center">
+
+            <button onClick={handleDelete}>Delete Account</button>
+          </div>
+
+          {/* modal */}
+
+          <div
+            className={`${verify ? "flex" : "hidden"
+              } fixed inset-0 z-50 items-center justify-center bg-black/40 backdrop-blur-sm`}
+          >
+            <div
+              className={`w-full max-w-sm p-6 rounded-2xl shadow-lg border flex flex-col gap-5 ${theme
+                  ? "bg-white border-gray-200 text-gray-900"
+                  : "bg-gray-900 border-gray-700 text-gray-100"
+                }`}
+            >
+              {/* Title */}
+              <h1 className="text-lg md:text-xl font-semibold text-center">
+                Do you want to delete account?
+              </h1>
+
+              {/* Buttons */}
+              <div className="flex justify-end gap-3">
+                <button
+                  onClick={() => {
+                    setVerify(false);
+                  }}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${theme
+                      ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+                    }`}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={() => {
+                   localStorage.removeItem("localUser");
+                   localStorage.removeItem("dailyTask");
+                   localStorage.removeItem("scheduleTask");
+                   localStorage.removeItem("task")  
+                   if(verify){
+                    navToSetup('/Setup')
+                   }
+                  }}
+                  className="px-4 py-2 rounded-lg text-sm font-medium bg-red-500 text-white hover:bg-red-600 transition"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
           </div>
 
         </div>
