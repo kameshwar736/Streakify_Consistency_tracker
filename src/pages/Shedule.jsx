@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar";
+import CreateContext_New from "../context/CreateContext_New";
 
 const Shedule = () => {
+  const { theme } = useContext(CreateContext_New);
+
   const [schedule, setSchedule] = useState({
     date: "",
     commitment: "",
@@ -39,21 +42,33 @@ const Shedule = () => {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gray-100 px-4 md:px-10 py-8">
+      <div
+        className={`min-h-screen px-4 md:px-10 py-8 ${
+          theme
+            ? "bg-gray-100 text-gray-900"
+            : "bg-gray-950 text-gray-100"
+        }`}
+      >
         <div className="max-w-7xl mx-auto">
 
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
+            <h1 className="text-3xl md:text-4xl font-semibold">
               Schedule your day
             </h1>
-            <p className="text-gray-500 mt-1 text-sm">
+            <p className="text-sm mt-1 text-gray-500">
               Plan and manage your daily commitments
             </p>
           </div>
 
           {/* Form Card */}
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 md:p-8 shadow-sm mb-8">
+          <div
+            className={`rounded-2xl p-6 md:p-8 shadow-sm mb-8 border ${
+              theme
+                ? "bg-white border-gray-200"
+                : "bg-gray-900 border-gray-700"
+            }`}
+          >
             <form
               onSubmit={handleSubmit}
               className="grid grid-cols-1 md:grid-cols-4 gap-4"
@@ -63,7 +78,11 @@ const Shedule = () => {
                 name="date"
                 value={schedule.date}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-gray-900 outline-none"
+                className={`rounded-xl px-4 py-3 outline-none border ${
+                  theme
+                    ? "bg-gray-50 border-gray-300 focus:ring-2 focus:ring-gray-900"
+                    : "bg-gray-800 border-gray-600 focus:ring-2 focus:ring-white"
+                }`}
               />
 
               <input
@@ -72,14 +91,22 @@ const Shedule = () => {
                 placeholder="Enter commitment"
                 value={schedule.commitment}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-xl px-4 py-3 md:col-span-2 focus:ring-2 focus:ring-gray-900 outline-none"
+                className={`rounded-xl px-4 py-3 md:col-span-2 outline-none border ${
+                  theme
+                    ? "bg-gray-50 border-gray-300 focus:ring-2 focus:ring-gray-900"
+                    : "bg-gray-800 border-gray-600 focus:ring-2 focus:ring-white"
+                }`}
               />
 
               <select
                 name="status"
                 value={schedule.status}
                 onChange={handleChange}
-                className="border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-gray-900 outline-none"
+                className={`rounded-xl px-4 py-3 outline-none border ${
+                  theme
+                    ? "bg-gray-50 border-gray-300"
+                    : "bg-gray-800 border-gray-600"
+                }`}
               >
                 <option value="Incomplete">Incomplete</option>
                 <option value="Completed">Completed</option>
@@ -87,7 +114,11 @@ const Shedule = () => {
 
               <button
                 type="submit"
-                className="md:col-span-4 bg-gray-900 text-white py-3 rounded-xl hover:bg-gray-800 transition"
+                className={`  py-3 rounded-xl font-semibold transition ${
+                  theme
+                    ? "bg-gray-900 text-white hover:bg-gray-700"
+                    : "bg-white text-gray-900 hover:bg-gray-300"
+                }`}
               >
                 Add Task
               </button>
@@ -96,20 +127,27 @@ const Shedule = () => {
 
           {/* Task Section */}
           <div>
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+            <h2 className="text-xl font-semibold mb-4">
               Your Tasks
             </h2>
 
-            {/* Grid instead of narrow list */}
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
               {data.map((e, i) => (
                 <div
                   key={i}
-                  className="bg-white border border-gray-200 rounded-2xl p-5 flex justify-between items-center hover:shadow-md transition"
+                  className={`rounded-2xl p-5 flex justify-between items-center transition hover:shadow-md border ${
+                    theme
+                      ? "bg-white border-gray-200"
+                      : "bg-gray-900 border-gray-700"
+                  }`}
                 >
                   <div>
                     <p className="text-sm text-gray-500">{e.date}</p>
-                    <p className="text-lg font-medium text-gray-800">
+                    <p
+                      className={`text-lg font-medium ${
+                        theme ? "text-gray-800" : "text-gray-100"
+                      }`}
+                    >
                       {e.commitment}
                     </p>
                   </div>
@@ -119,7 +157,7 @@ const Shedule = () => {
                     onChange={(event) =>
                       updateStatus(i, event.target.value)
                     }
-                    className={`px-3 py-2 rounded-lg text-sm font-medium ${
+                    className={`px-3 py-2 rounded-lg text-sm font-medium outline-none ${
                       e.status === "Completed"
                         ? "bg-green-100 text-green-600"
                         : "bg-red-100 text-red-600"
@@ -131,7 +169,6 @@ const Shedule = () => {
                 </div>
               ))}
             </div>
-
           </div>
 
         </div>

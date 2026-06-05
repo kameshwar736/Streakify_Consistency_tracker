@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
+import CreateContext_New from "../context/CreateContext_New";
 
 const ProfileDashboard = () => {
+
+  const { theme } = useContext(CreateContext_New)
 
   const [user, setUser] = useState({});
   const [todayTasks, setTodayTasks] = useState([]);
@@ -17,11 +20,9 @@ const ProfileDashboard = () => {
 
     setUser(localUser);
 
-    // ===== TODAY TASKS =====
     const todayData = dailyTask[today] || [];
     setTodayTasks(todayData);
 
-    // ===== WEEKLY DATA =====
     const last7Days = [];
 
     for (let i = 6; i >= 0; i--) {
@@ -42,7 +43,6 @@ const ProfileDashboard = () => {
 
     setWeeklyData(last7Days);
 
-    // ===== HEATMAP (30 DAYS) =====
     const days = [];
 
     for (let i = 29; i >= 0; i--) {
@@ -73,7 +73,6 @@ const ProfileDashboard = () => {
 
   }, []);
 
-  // ===== CALCULATIONS =====
   const completedToday = todayTasks.filter(t => t.completed).length;
   const totalToday = todayTasks.length;
 
@@ -83,14 +82,13 @@ const ProfileDashboard = () => {
 
   const bestStreak = user.bestStreak || user.streak || 0;
 
-  // ===== HEATMAP COLOR =====
   const getColor = (level) => {
     switch (level) {
-      case 1: return "bg-green-200";
-      case 2: return "bg-green-400";
-      case 3: return "bg-green-600";
-      case 4: return "bg-green-800";
-      default: return "bg-gray-200";
+      case 1: return theme ? "bg-green-200" : "bg-green-900";
+      case 2: return theme ? "bg-green-400" : "bg-green-700";
+      case 3: return theme ? "bg-green-600" : "bg-green-500";
+      case 4: return theme ? "bg-green-800" : "bg-green-300";
+      default: return theme ? "bg-gray-200" : "bg-gray-700";
     }
   };
 
@@ -98,11 +96,11 @@ const ProfileDashboard = () => {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className={`min-h-screen ${theme ? "bg-gray-50 text-gray-900" : "bg-gray-950 text-gray-100"} p-6`}>
         <div className="max-w-4xl mx-auto">
 
           {/* HEADER */}
-          <div className="bg-gray-900 text-white rounded-2xl p-6 mb-6 flex justify-between items-center">
+          <div className={`${theme ? "bg-white text-gray-900" : "bg-gray-900 text-white"} rounded-2xl p-6 mb-6 flex justify-between items-center shadow-sm`}>
             <div>
               <h1 className="text-xl font-bold">{user.userName}</h1>
               <p className="text-gray-400 text-sm">{user.designation}</p>
@@ -121,65 +119,37 @@ const ProfileDashboard = () => {
           {/* STATS */}
           <div className="grid grid-cols-3 gap-4 mb-6">
 
-            <div className="bg-white p-4 rounded-xl text-center">
-              <p className="text-sm text-gray-500">Completed</p>
-              <p className="text-xl font-bold">{completedToday}</p>
-            </div>
-
-            <div className="bg-white p-4 rounded-xl text-center">
-              <p className="text-sm text-gray-500">Total Tasks</p>
-              <p className="text-xl font-bold">{totalToday}</p>
-            </div>
-
-            <div className="bg-white p-4 rounded-xl text-center">
-              <p className="text-sm text-gray-500">Best Streak</p>
-              <p className="text-xl font-bold">{bestStreak}</p>
-            </div>
+            {[ 
+              { label: "Completed", value: completedToday },
+              { label: "Total Tasks", value: totalToday },
+              { label: "Best Streak", value: bestStreak }
+            ].map((item, i) => (
+              <div key={i} className={`${theme ? "bg-white border-gray-200" : "bg-gray-900 border-gray-700"} p-4 rounded-xl text-center border`}>
+                <p className="text-sm text-gray-500">{item.label}</p>
+                <p className="text-xl font-bold">{item.value}</p>
+              </div>
+            ))}
 
           </div>
 
           {/* PROGRESS */}
-          <div className="bg-white p-5 rounded-2xl mb-6">
+          <div className={`${theme ? "bg-white border-gray-200" : "bg-gray-900 border-gray-700"} p-5 rounded-2xl mb-6 border`}>
             <div className="flex justify-between mb-2">
               <p className="text-sm font-semibold">Today's Progress</p>
               <p className="text-sm">{progress}%</p>
             </div>
 
-            <div className="w-full bg-gray-200 h-2 rounded">
+            <div className={`${theme ? "bg-gray-200" : "bg-gray-700"} h-2 rounded`}>
               <div
-                className="bg-gray-900 h-2 rounded"
+                className={`${theme ? "bg-gray-900" : "bg-white"} h-2 rounded`}
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
 
-          {/* WEEKLY */}
-          <div className="bg-white p-5 rounded-2xl mb-6">
-            <p className="font-semibold mb-4">Last 7 Days</p>
-
-            <div className="flex justify-between items-end h-32">
-              {weeklyData.map((d, i) => {
-                const percent = d.total
-                  ? (d.completed / d.total) * 100
-                  : 0;
-
-                return (
-                  <div key={i} className="flex flex-col items-center">
-                    <div
-                      className="w-6 bg-gray-900 rounded"
-                      style={{ height: `${percent}%` }}
-                    />
-                    <p className="text-[10px] mt-1">
-                      {d.date.slice(5)}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
+        
           {/* HEATMAP */}
-          <div className="bg-white p-5 rounded-2xl mb-6">
+          <div className={`${theme ? "bg-white border-gray-200" : "bg-gray-900 border-gray-700"} p-5 rounded-2xl mb-6 border`}>
             <p className="font-semibold mb-4">Activity</p>
 
             <div className="grid grid-cols-10 gap-2">
@@ -194,7 +164,7 @@ const ProfileDashboard = () => {
           </div>
 
           {/* INSIGHT */}
-          <div className="bg-white p-5 rounded-2xl">
+          <div className={`${theme ? "bg-white border-gray-200" : "bg-gray-900 border-gray-700"} p-5 rounded-2xl border`}>
             <p className="font-semibold mb-2">Insight</p>
 
             {progress === 100 ? (
@@ -202,7 +172,7 @@ const ProfileDashboard = () => {
                 Perfect day! Keep it up!
               </p>
             ) : progress > 50 ? (
-              <p className="text-yellow-600 text-sm">
+              <p className="text-yellow-500 text-sm">
                 Good progress, almost there!
               </p>
             ) : (

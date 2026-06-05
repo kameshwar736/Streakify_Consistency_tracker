@@ -1,22 +1,43 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+
+import CreateContext_New from '../context/CreateContext_New'
 
 const ThemeToggle = () => {
 
-  const [theme , setTheme] = useState(false)
+  // const [theme , setTheme] = useState(false)
 
-  const handleTheme = ()=>{
-    setTheme(!theme)
-    console.log(theme);
+  // const handleTheme = ()=>{
+  //   setTheme(!theme)
+  //   console.log(theme);
     
-  }
+  // }
+
+  // const nnewdata = useContext(CreateContext)
+  // console.log(nnewdata);
+  
+  const {handleTheme,theme,setTheme} = useContext(CreateContext_New)
+
 
 
   return (
-   <>
-   <div className={theme?'bg-black text-white w-15 text-center rounded-2xl': 'bg-gray-300 text-black w-15 text-center rounded-2xl'}>
-       {theme? <button  className='text-sm p-1' onClick={handleTheme}>dark</button>: <button  className='text-sm p-1' onClick={handleTheme}>light</button>}
-   </div>
-   </>
+ <>
+  <div
+    onClick={handleTheme}
+    className={`w-16 h-6 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 ${
+      theme ? "bg-gray-400" : "bg-gray-400"
+    }`}
+  >
+    <div
+      className={`w-6 h-4 rounded-full shadow-md transform transition-all duration-300 flex items-center justify-center text-xs font-bold ${
+        theme
+          ? "translate-x-8 bg-white text-black"
+          : "translate-x-0 bg-black text-white"
+      }`}
+    >
+      {theme ? "L" : "D"}
+    </div>
+  </div>
+</>
   )
 }
 

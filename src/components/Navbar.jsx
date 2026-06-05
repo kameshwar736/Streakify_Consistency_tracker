@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
+import CreateContext_New from '../context/CreateContext_New'
 
 const Navbar = () => {
+
+
+ const {handleTheme,theme,setTheme} = useContext(CreateContext_New)
+
   return (
-    <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 px-4 md:px-10 h-20 flex items-center justify-between shadow-sm sticky top-0 z-50">
+    <nav className={`${theme?"bg-white":"bg-gray-900"} backdrop-blur-md border-b  px-4 md:px-10 h-20 flex items-center justify-between shadow-sm sticky top-0 z-50`}>
 
       {/* Logo */}
       <div className="flex items-center gap-3">
@@ -14,7 +19,7 @@ const Navbar = () => {
             <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
           </svg>
         </div>
-        <span className="text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
+        <span className= {`text-xl md:text-2xl font-bold ${theme?"text-gray-900":"text-gray-300"}  tracking-tight`}>
           Streakify
         </span>
       </div>
@@ -24,28 +29,28 @@ const Navbar = () => {
 
         <Link
           to='/'
-          className="text-sm md:text-base font-medium text-gray-600 px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm"
+          className={`text-sm md:text-base font-medium ${theme?"text-gray-600":"text-gray-300"} px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm`}
         >
           Home
         </Link>
 
         <Link
           to='/task'
-          className="text-sm md:text-base font-medium text-gray-600 px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm"
+          className={`text-sm md:text-base font-medium ${theme?"text-gray-600":"text-gray-300"} px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm`}
         >
           Task
         </Link>
 
         <Link
           to='/Shedule'
-          className="text-sm md:text-base font-medium text-gray-600 px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm"
+         className={`text-sm md:text-base font-medium ${theme?"text-gray-600":"text-gray-300"} px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm`}
         >
           Scheduler
         </Link>
 
         <Link
           to='/profile'
-          className="text-sm md:text-base font-medium text-gray-600 px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm"
+          className={`text-sm md:text-base font-medium ${theme?"text-gray-600":"text-gray-300"} px-3 md:px-5 py-2.5 rounded-xl whitespace-nowrap transition-all duration-200 hover:text-gray-900 hover:bg-gray-100 hover:shadow-sm`}
         >
           Profile
         </Link>
