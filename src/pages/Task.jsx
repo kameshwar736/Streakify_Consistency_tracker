@@ -4,7 +4,7 @@ import CreateContext_New from '../context/CreateContext_New'
 
 const Task = () => {
 
-    const { theme } = useContext(CreateContext_New)
+    const { theme, setTaskDetail } = useContext(CreateContext_New)
 
     const [tasks, setTasks] = useState([])
     const [todo, setTodo] = useState({ start: "", end: "", do: "", completed: false })
@@ -21,9 +21,18 @@ const Task = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const updatedTasks = [...tasks, todo]
+
+        const updatedTasks = [...tasks, { ...todo, completed: false }]
+
         setTasks(updatedTasks)
         localStorage.setItem("task", JSON.stringify(updatedTasks))
+
+        //  update context instantly
+        setTaskDetail(updatedTasks)
+
+        //  notify Home page
+        window.dispatchEvent(new Event("storage"))
+
         alert("Task Added")
         setShowForm(false)
         setTodo({ start: "", end: "", do: "" })
@@ -66,11 +75,10 @@ const Task = () => {
 
                         <button
                             onClick={() => setShowForm(true)}
-                            className={`flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-xl transition w-full md:w-auto justify-center ${
-                                theme
+                            className={`flex items-center gap-2 text-sm font-semibold px-6 py-3 rounded-xl transition w-full md:w-auto justify-center ${theme
                                     ? "bg-gray-900 hover:bg-gray-700 text-white"
                                     : "bg-white text-gray-900 hover:bg-gray-300"
-                            }`}
+                                }`}
                         >
                             <span className="text-lg">+</span> Add Task
                         </button>

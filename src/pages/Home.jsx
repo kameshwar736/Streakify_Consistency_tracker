@@ -16,24 +16,43 @@ const Home = () => {
   const today = new Date().toISOString().split("T")[0]
 
   useEffect(() => {
+
     const user = JSON.parse(localStorage.getItem("localUser") || "null")
-    if (!user) { nav('/Setup'); return }
+
+    if (!user) {
+      nav('/Setup')
+      return
+    }
+
     setActiveUser(user)
     setStreak(user.streak || 0)
 
     const storedDaily = JSON.parse(localStorage.getItem("dailyTask")) || {}
 
-    if (!storedDaily[today] && taskDetail && taskDetail.length > 0) {
-      const newDailyTasks = taskDetail.map(task => ({
-        ...task,
-        completed: false,
-        date: today
-      }))
-      storedDaily[today] = newDailyTasks
+    // ✅ FIXED LOGIC (merge new tasks daily without duplicates)
+    if (taskDetail && taskDetail.length > 0) {
+
+      const existingTasks = storedDaily[today] || []
+
+      const newTasks = taskDetail.filter(
+        task => !existingTasks.some(t => t.do === task.do)
+      )
+
+      const mergedTasks = [
+        ...existingTasks,
+        ...newTasks.map(task => ({
+          ...task,
+          completed: false,
+          date: today
+        }))
+      ]
+
+      storedDaily[today] = mergedTasks
       localStorage.setItem("dailyTask", JSON.stringify(storedDaily))
     }
 
     setTodayTasks(storedDaily[today] || [])
+
   }, [taskDetail])
 
   const handletask = (clickedTask) => {
@@ -70,6 +89,7 @@ const Home = () => {
 
   const completedCount = todayTasks.filter(t => t.completed).length
   const totalCount = todayTasks.length
+
   const progressPercent =
     totalCount > 0
       ? Math.round((completedCount / totalCount) * 100)
