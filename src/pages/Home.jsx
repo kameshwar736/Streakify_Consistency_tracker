@@ -29,7 +29,7 @@ const Home = () => {
 
     const storedDaily = JSON.parse(localStorage.getItem("dailyTask")) || {}
 
-    // ✅ FIXED LOGIC (merge new tasks daily without duplicates)
+   
     if (taskDetail && taskDetail.length > 0) {
 
       const existingTasks = storedDaily[today] || []
